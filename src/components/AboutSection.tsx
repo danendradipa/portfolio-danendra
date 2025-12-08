@@ -24,7 +24,7 @@ const AboutSection = () => {
               />
             </div>
             <div className="mt-12 md:mt-0 md:w-1/2 md:max-w-[500px] flex flex-col gap-6">
-              <p className="font-light text-justify leading-relaxed">
+              <p className="font-light text-lg text-justify leading-relaxed">
                 Hi everyone, my name is Danendra Dipa. I am a student of
                 Information Technology at Yogyakarta State University with a
                 passion for technology, focusing on Machine Learning, Front-End
@@ -32,17 +32,12 @@ const AboutSection = () => {
                 Python and JavaScript for development and enjoy creating user
                 interfaces with frameworks like React.
               </p>
-              <p className="font-light text-justify leading-relaxed">
+              <p className="font-light text-lg text-justify leading-relaxed">
                 I also have a background in designing user-friendly and visually
                 appealing interfaces with tools like Figma. I am eager to
                 explore new technologies and apply them to solve real-world
                 problems effectively.
               </p>
-              <a href="#" download={true}>
-                <button className="mt-5 text-base text-white font-semibold bg-orange-400 py-3 px-8 rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">
-                  Download CV
-                </button>
-              </a>
             </div>
           </div>
         </div>
