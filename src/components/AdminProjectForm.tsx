@@ -148,15 +148,22 @@ export default function AdminProjectForm({
       </div>
 
       <div>
-        <label className="block text-sm font-semibold mb-1">
+        <label className="block text-sm font-semibold mb-2 text-gray-700">
           Project Image
         </label>
         <input
           type="file"
           onChange={(e) => setFile(e.target.files?.[0] || null)}
+          className="block w-full text-sm text-gray-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-blue-50 file:text-blue-700
+            hover:file:bg-blue-100
+            cursor-pointer border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
         />
         {initialData && (
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-orange-500 mt-2 flex items-center gap-1">
             Biarkan kosong jika tidak ingin mengubah gambar.
           </p>
         )}
