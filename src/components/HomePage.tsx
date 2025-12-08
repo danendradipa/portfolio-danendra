@@ -3,6 +3,7 @@
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 import Image from "next/image";
 import FadeIn from "@/animations/FadeIn";
+import Link from "next/link";
 
 const HomePage = () => {
   const [text] = useTypewriter({
@@ -27,7 +28,7 @@ const HomePage = () => {
               <h1 className="font-bold text-dark text-4xl mt-1 lg:text-5xl ">
                 Hi, Im <span className="text-orange-400">Danendra Dipa</span>
               </h1>
-              <h2 className="font-medium text-secondary text-lg mb-5 mt-1 lg:text-2xl">
+              <h2 className="font-mediumtext-lg mb-5 mt-1 lg:text-2xl">
                 {text}
                 <Cursor
                   cursorBlinking={false}
@@ -40,11 +41,11 @@ const HomePage = () => {
                 user-friendly websites. Feel free to explore my portfolio or
                 reach out if you would like to collaborate!
               </p>
-              <a href="#" download={true}>
+              <Link href={"/contact"}>
                 <button className="mt-5 text-white text-base font-semibold bg-orange-400 py-3 px-8 rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">
-                  Download CV
+                  Contact me
                 </button>
-              </a>
+              </Link>
             </div>
             <div className="relative w-[400px] h-[400px] overflow-hidden rounded-full shadow-2xl">
               <Image
