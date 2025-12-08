@@ -8,8 +8,8 @@ import {
 } from "@/services/projectServices";
 
 type Props = {
-  initialData?: Project | null; // Kalau ada isinya berarti Edit Mode
-  onSuccess: () => void; // Fungsi biar Admin Page tau kalau sudah selesai
+  initialData?: Project | null;
+  onSuccess: () => void;
   onCancel: () => void;
 };
 
@@ -18,26 +18,22 @@ export default function AdminProjectForm({
   onSuccess,
   onCancel,
 }: Props) {
-  // 1. State disesuaikan dengan Type Baru
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [projectUrl, setProjectUrl] = useState("");
 
-  // State khusus string input (karena HTML input tidak bisa langsung Array)
   const [tagsInput, setTagsInput] = useState("");
   const [toolsInput, setToolsInput] = useState("");
 
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // 2. Logic Populate Data (Saat Edit Mode)
   useEffect(() => {
     if (initialData) {
       setTitle(initialData.title);
       setDesc(initialData.description);
       setProjectUrl(initialData.project_url);
 
-      // Konversi Array ["Web", "React"] menjadi String "Web, React" untuk ditampilkan di input
       setTagsInput(initialData.tags.join(", "));
       setToolsInput(initialData.tools.join(", "));
     }
@@ -50,7 +46,6 @@ export default function AdminProjectForm({
     try {
       let imageUrl = initialData?.image_url || "";
 
-      // Logic Upload Gambar
       if (file) {
         imageUrl = await uploadImage(file);
       } else if (!initialData && !file) {
@@ -59,8 +54,6 @@ export default function AdminProjectForm({
         return;
       }
 
-      // 3. Konversi String Input -> Array Data
-      // "Web, Mobile" -> ["Web", "Mobile"]
       const formattedTags = tagsInput
         .split(",")
         .map((item) => item.trim())
@@ -70,22 +63,17 @@ export default function AdminProjectForm({
         .map((item) => item.trim())
         .filter((i) => i);
 
-      // Membentuk Object sesuai Type ProjectInput
       const projectData: ProjectInput = {
         title,
         description: desc,
         image_url: imageUrl,
-        project_url: projectUrl, // Field baru
-        tags: formattedTags, // Field baru (Array)
-        tools: formattedTools, // Field baru (Array)
+        project_url: projectUrl,
+        tags: formattedTags,
+        tools: formattedTools,
       };
 
       if (initialData) {
-        await updateProject(
-            initialData.id, 
-            projectData, 
-            initialData.image_url 
-        );
+        await updateProject(initialData.id, projectData, initialData.image_url);
       } else {
         await createProject(projectData);
       }
@@ -107,11 +95,10 @@ export default function AdminProjectForm({
         {initialData ? "Edit Project" : "Add New Project"}
       </h2>
 
-      {/* Input Title */}
       <div>
         <label className="block text-sm font-semibold mb-1">Title</label>
         <input
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full  outline-1 focus:outline-zinc-900 focus:outline-2"
           placeholder="Project Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -119,44 +106,40 @@ export default function AdminProjectForm({
         />
       </div>
 
-      {/* Input Tags (Array) */}
       <div>
         <label className="block text-sm font-semibold mb-1">Tags</label>
         <input
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full outline-1 focus:outline-zinc-900 focus:outline-2"
           placeholder="Contoh: Web, Mobile, AI (Pisahkan koma)"
           value={tagsInput}
           onChange={(e) => setTagsInput(e.target.value)}
         />
       </div>
 
-      {/* Input Tools (Array) */}
       <div>
         <label className="block text-sm font-semibold mb-1">Tools</label>
         <input
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full  outline-1 focus:outline-zinc-900 focus:outline-2"
           placeholder="Contoh: React, Next.js, Supabase (Pisahkan koma)"
           value={toolsInput}
           onChange={(e) => setToolsInput(e.target.value)}
         />
       </div>
 
-      {/* Input Project URL */}
       <div>
         <label className="block text-sm font-semibold mb-1">Project URL</label>
         <input
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full  outline-1 focus:outline-zinc-900 focus:outline-2"
           placeholder="https://github.com/..."
           value={projectUrl}
           onChange={(e) => setProjectUrl(e.target.value)}
         />
       </div>
 
-      {/* Input Description */}
       <div>
         <label className="block text-sm font-semibold mb-1">Description</label>
         <textarea
-          className="border p-2 rounded w-full h-24"
+          className="border p-2 rounded w-full h-24  outline-1 focus:outline-zinc-900 focus:outline-2"
           placeholder="Project Description..."
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
@@ -164,7 +147,6 @@ export default function AdminProjectForm({
         />
       </div>
 
-      {/* Input Image */}
       <div>
         <label className="block text-sm font-semibold mb-1">
           Project Image
@@ -180,7 +162,6 @@ export default function AdminProjectForm({
         )}
       </div>
 
-      {/* Buttons */}
       <div className="flex gap-2 mt-4">
         <button
           type="submit"
