@@ -1,197 +1,86 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
-import { Project } from "@/types/Project";
-import { getProjects, deleteProject } from "@/services/projectServices";
-import AdminProjectForm from "@/components/AdminProjectForm";
-import AdminProjectItem from "@/components/AdminProjectItem";
+import { Session } from "@supabase/supabase-js";
+import { FolderGit2, User, Activity } from "lucide-react";
 
-export default function AdminPage() {
+export default function AdminDashboard() {
   const [session, setSession] = useState<Session | null>(null);
-  const [projects, setProjects] = useState<Project[]>([]);
-
-  // State untuk mengontrol mode form
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingProject, setEditingProject] = useState<Project | null>(null);
-
-
-  const fetchAllProjects = async () => {
-    try {
-      const data = await getProjects();
-      setProjects(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const [projectCount, setProjectCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initializeData = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    const initData = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setSession(session);
-      
-      if (session) {
-        try {
-          const data = await getProjects();
-          setProjects(data); 
-        } catch (err) {
-          console.error("Gagal fetch projects admin:", err);
-        }
-      }
+
+      const { count } = await supabase
+        .from("projects")
+        .select("*", { count: "exact", head: true });
+
+      if (count) setProjectCount(count);
+      setLoading(false);
     };
 
-    initializeData();
+    initData();
   }, []);
 
-  const handleEdit = (project: Project) => {
-    setEditingProject(project);
-    setIsFormOpen(true);
-  };
+  return (
+    <div>
+      <h1 className="text-3xl font-bold mb-6">Dashboard Overview</h1>
+      <div className=" p-6 bg-blue-50 dark:bg-zinc-800/50 border border-blue-100 dark:border-zinc-700 rounded-xl">
+        <h2 className="font-bold text-blue-900 dark:text-blue-100 mb-2">
+          👋 Welcome back!
+        </h2>
+        <p className="text-blue-700 dark:text-gray-400 text-sm">
+          Select <b>Projects</b> in the sidebar to manage your website
+          content.
+        </p>
+      </div>
 
-  const handleDelete = async (id: number, imageUrl: string) => {
-    if (confirm("Yakin mau hapus project ini beserta gambarnya?")) {
-      try {
-        await deleteProject(id, imageUrl);
-        fetchAllProjects();
-      } catch (error) {
-        alert("Gagal menghapus project");
-        console.error(error);
-      }
-    }
-  };
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="p-6 bg-white dark:bg-zinc-800 rounded-xl shadow-sm border dark:border-zinc-700 flex items-center justify-between">
+          <div>
+            <h3 className="text-gray-500 text-sm font-medium">
+              Total Projects
+            </h3>
+            {loading ? (
+              <div className="h-8 w-12 bg-gray-200 dark:bg-zinc-700 animate-pulse rounded mt-1"></div>
+            ) : (
+              <p className="font-bold text-3xl mt-1">{projectCount}</p>
+            )}
+          </div>
+          <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-full text-blue-600 dark:text-blue-400">
+            <FolderGit2 size={24} />
+          </div>
+        </div>
 
-  const handleSuccess = () => {
-    setIsFormOpen(false);
-    setEditingProject(null);
-    fetchAllProjects();
-  };
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (!error) window.location.reload();
-    else alert(error.message);
-  };
-
-  if (!session)
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-          <div className="flex flex-col items-center">
-            <h2 className="mt-4 text-3xl font-bold text-center text-gray-800">
-              Masuk ke Akun Anda
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Masukkan email dan password Anda
+        <div className="p-6 bg-white dark:bg-zinc-800 rounded-xl shadow-sm border dark:border-zinc-700 flex items-center justify-between">
+          <div>
+            <h3 className="text-gray-500 text-sm font-medium">Active User</h3>
+            <p className="font-bold text-sm mt-2 truncate max-w-[150px]">
+              {session?.user?.email}
             </p>
           </div>
-          <form className="space-y-6" onSubmit={handleLogin}>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="block w-full px-4 py-2 mt-1 border text-zinc-900 rounded-lg"
-                placeholder="nama@email.com"
-                onChange={(e) => setEmail(e.target.value)}
-              />
+          <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-full text-green-600 dark:text-green-400">
+            <User size={24} />
+          </div>
+        </div>
+
+        <div className="p-6 bg-white dark:bg-zinc-800 rounded-xl shadow-sm border dark:border-zinc-700 flex items-center justify-between">
+          <div>
+            <h3 className="text-gray-500 text-sm font-medium">System Status</h3>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              <p className="font-bold text-lg text-green-600">Online</p>
             </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="block w-full px-4 py-2 mt-1 border text-zinc-900 rounded-lg"
-                placeholder="••••••••"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium bg-zinc-900 text-white"
-            >
-              Masuk
-            </button>
-          </form>
+          </div>
+          <div className="p-3 bg-orange-50 dark:bg-orange-900/20 rounded-full text-orange-600 dark:text-orange-400">
+            <Activity size={24} />
+          </div>
         </div>
-      </div>
-    );
-
-  return (
-    <div className="p-10 max-w-4xl mx-auto pb-20">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Project Manager</h1>
-        <div className="flex gap-4">
-          <button
-            onClick={() => {
-              setEditingProject(null);
-              setIsFormOpen(true);
-            }}
-            className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
-          >
-            + Add Project
-          </button>
-          <button
-            onClick={() =>
-              supabase.auth.signOut().then(() => window.location.reload())
-            }
-            className="text-red-500"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-
-      {isFormOpen && (
-        <div className="mb-8">
-          <AdminProjectForm
-            initialData={editingProject}
-            onSuccess={handleSuccess}
-            onCancel={() => {
-              setIsFormOpen(false);
-              setEditingProject(null);
-            }}
-          />
-        </div>
-      )}
-
-      {/* List Projects */}
-      <div className="space-y-2">
-        {projects.length === 0 ? (
-          <p className="text-gray-500">Belum ada project.</p>
-        ) : (
-          projects.map((p) => (
-            <AdminProjectItem
-              key={p.id}
-              project={p}
-              onEdit={handleEdit}
-              onDelete={handleDelete} // Props ini sekarang menerima fungsi dengan 2 parameter
-            />
-          ))
-        )}
       </div>
     </div>
   );
