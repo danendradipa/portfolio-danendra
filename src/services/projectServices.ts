@@ -1,23 +1,8 @@
 // services/projectService.ts
 import { supabase } from '@/lib/supabase';
 import { Project, ProjectInput } from '@/types/Project';
+import { deleteFileFromUrl } from '@/helpers/helper';
 
-
-// Helper fuctions for delteing image
-const deleteFileFromUrl = async (imageUrl: string) => {
-  try {
-    const fileName = imageUrl.split('/').pop(); // Ambil nama file
-    if (!fileName) return;
-
-    const { error } = await supabase.storage
-      .from('portfolio-images')
-      .remove([fileName]);
-
-    if (error) console.warn("Warning: Gagal hapus gambar lama di storage", error);
-  } catch (err) {
-    console.error("Error helper delete:", err);
-  }
-};
 
 // GET ALL
 export const getProjects = async () => {
@@ -32,7 +17,6 @@ export const getProjects = async () => {
 
 // UPLOAD IMAGE
 export const uploadImage = async (file: File) => {
-  // Tips: Tambahkan replace agar nama file bersih dari spasi
   const fileName = `${Date.now()}-${file.name.replace(/\s/g, '-')}`;
   
   const { error } = await supabase.storage
@@ -50,12 +34,10 @@ export const uploadImage = async (file: File) => {
 
 // CREATE
 export const createProject = async (project: ProjectInput) => {
-  // Supabase otomatis handle array tags[] & tools[]
   const { error } = await supabase.from('projects').insert([project]);
   if (error) throw error;
 };
 
-// UPDATE
 export const updateProject = async (id: number, project: Partial<ProjectInput>, oldImageUrl?: string) => {
   if (project.image_url && oldImageUrl && project.image_url !== oldImageUrl) {
     await deleteFileFromUrl(oldImageUrl);
@@ -69,13 +51,10 @@ export const updateProject = async (id: number, project: Partial<ProjectInput>, 
   if (error) throw error;
 };
 
-// DELETE (Improved)
-// Kita butuh imageUrl untuk menghapus file gambarnya juga biar storage gak penuh sampah
+// DELETE
 export const deleteProject = async (id: number, imageUrl: string) => {
-  // 1. Hapus Gambar dari Storage
   await deleteFileFromUrl(imageUrl);
 
-  // 2. Hapus Data dari Database
   const { error } = await supabase.from('projects').delete().eq('id', id);
   if (error) throw error;
 };
