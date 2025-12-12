@@ -1,6 +1,8 @@
+import { supabase } from "@/lib/supabase";
+
 export const deleteFileFromUrl = async (imageUrl: string) => {
   try {
-    const fileName = imageUrl.split('/').pop(); // Ambil nama file
+    const fileName = imageUrl.split('/').pop(); 
     if (!fileName) return;
 
     const { error } = await supabase.storage
