@@ -47,7 +47,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           </i>
         </div>
 
-        {/* <a href={projectLink} target="_blank" className="absolute inset-0"></a> */}
+        <a href={project.project_url} target="_blank" className="absolute inset-0"></a>
       </div>
     </div>
   );
