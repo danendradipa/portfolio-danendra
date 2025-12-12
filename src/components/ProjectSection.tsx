@@ -5,6 +5,7 @@ import type { Project } from "@/types/Project";
 import { getProjects } from "@/services/projectServices";
 import { useEffect, useState } from "react";
 import FadeIn from "@/animations/FadeIn";
+import TagsFilter from "./TagsFilter";
 
 const ProjectSection = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -49,21 +50,11 @@ const ProjectSection = () => {
           </div>
         </FadeIn>
         <FadeIn>
-          <div className="flex flex-wrap justify-center gap-3">
-            {allTags.map((tag, index) => (
-              <button
-                key={index}
-                onClick={() => setFilter(tag)}
-                className={`px-5 py-2 rounded-full text-sm font-medium border transition-all duration-300 ${
-                  filter === tag
-                    ? "bg-orange-400 text-white border-orange-400 shadow-md scale-105"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-orange-200 hover:bg-orange-50"
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
+          <TagsFilter
+            tags={allTags}
+            activeTag={filter}
+            onTagChange={setFilter}
+          />
         </FadeIn>
       </div>
       {loading ? (
