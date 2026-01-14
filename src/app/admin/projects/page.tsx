@@ -51,7 +51,7 @@ export default function ProjectsPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">Projects</h1>
@@ -69,7 +69,7 @@ export default function ProjectsPage() {
       </div>
 
       {isFormOpen && (
-        <div className="mb-8 bg-gray-50 p-4 rounded-xl border">
+        <div className="mb-8 bg-gray-50 dark:bg-zinc-900 p-4 rounded-xl border dark:border-zinc-700">
           <ProjectForm
             initialData={editingProject}
             onSuccess={handleSuccess}
