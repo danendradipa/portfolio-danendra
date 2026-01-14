@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Blog } from "@/types/Blog";
 import { formatDate } from "@/helpers/helper";
 import { Calendar, Clock } from "lucide-react";
+import Link from "next/link";
 
 interface BlogCardProps {
   blog: Blog;
@@ -37,16 +38,17 @@ const BlogCard = ({ blog }: BlogCardProps) => {
               {formatDate(blog.created_at || "")}
             </p>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 flex items-center gap-1">
-              <Clock size={12} />
-              3 min read
+              <Clock size={12} />3 min read
             </p>
           </div>
-          <button
-            type="button"
-            className="text-white bg-orange-400 text-base font-semibold py-2 px-6 rounded-md hover:bg-orange-500 transition duration-300 mt-6 w-full"
-          >
-            Read More
-          </button>
+          <Link href={`/blogs/${blog.slug}`}>
+            <button
+              type="button"
+              className="text-white bg-orange-400 text-base font-semibold py-2 px-6 rounded-md hover:bg-orange-500 transition duration-300 mt-6 w-full"
+            >
+              Read More
+            </button>
+          </Link>
         </div>
       </div>
     </div>
