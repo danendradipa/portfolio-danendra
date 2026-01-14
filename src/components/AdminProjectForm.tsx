@@ -89,7 +89,7 @@ export default function AdminProjectForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-6 rounded shadow-md text-black border border-gray-200 flex flex-col gap-4"
+      className="bg-white dark:bg-zinc-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-zinc-700 flex flex-col gap-4"
     >
       <h2 className="text-xl font-bold mb-2">
         {initialData ? "Edit Project" : "Add New Project"}
@@ -98,7 +98,7 @@ export default function AdminProjectForm({
       <div>
         <label className="block text-sm font-semibold mb-1">Title</label>
         <input
-          className="border p-2 rounded w-full  outline-1 focus:outline-zinc-900 focus:outline-2"
+          className="border dark:border-zinc-600 p-2 rounded w-full outline-1 focus:outline-zinc-900 dark:focus:outline-zinc-400 focus:outline-2 bg-white dark:bg-zinc-700"
           placeholder="Project Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -109,7 +109,7 @@ export default function AdminProjectForm({
       <div>
         <label className="block text-sm font-semibold mb-1">Tags</label>
         <input
-          className="border p-2 rounded w-full outline-1 focus:outline-zinc-900 focus:outline-2"
+          className="border dark:border-zinc-600 p-2 rounded w-full outline-1 focus:outline-zinc-900 dark:focus:outline-zinc-400 focus:outline-2 bg-white dark:bg-zinc-700"
           placeholder="Contoh: Web, Mobile, AI (Pisahkan koma)"
           value={tagsInput}
           onChange={(e) => setTagsInput(e.target.value)}
@@ -119,7 +119,7 @@ export default function AdminProjectForm({
       <div>
         <label className="block text-sm font-semibold mb-1">Tools</label>
         <input
-          className="border p-2 rounded w-full  outline-1 focus:outline-zinc-900 focus:outline-2"
+          className="border dark:border-zinc-600 p-2 rounded w-full outline-1 focus:outline-zinc-900 dark:focus:outline-zinc-400 focus:outline-2 bg-white dark:bg-zinc-700"
           placeholder="Contoh: React, Next.js, Supabase (Pisahkan koma)"
           value={toolsInput}
           onChange={(e) => setToolsInput(e.target.value)}
@@ -129,7 +129,7 @@ export default function AdminProjectForm({
       <div>
         <label className="block text-sm font-semibold mb-1">Project URL</label>
         <input
-          className="border p-2 rounded w-full  outline-1 focus:outline-zinc-900 focus:outline-2"
+          className="border dark:border-zinc-600 p-2 rounded w-full outline-1 focus:outline-zinc-900 dark:focus:outline-zinc-400 focus:outline-2 bg-white dark:bg-zinc-700"
           placeholder="https://github.com/..."
           value={projectUrl}
           onChange={(e) => setProjectUrl(e.target.value)}
@@ -139,7 +139,7 @@ export default function AdminProjectForm({
       <div>
         <label className="block text-sm font-semibold mb-1">Description</label>
         <textarea
-          className="border p-2 rounded w-full h-24  outline-1 focus:outline-zinc-900 focus:outline-2"
+          className="border dark:border-zinc-600 p-2 rounded w-full h-24 outline-1 focus:outline-zinc-900 dark:focus:outline-zinc-400 focus:outline-2 bg-white dark:bg-zinc-700"
           placeholder="Project Description..."
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
@@ -148,11 +148,12 @@ export default function AdminProjectForm({
       </div>
 
       <div>
-        <label className="block text-sm font-semibold mb-2 text-gray-700">
+        <label className="block text-sm font-semibold mb-2">
           Project Image
         </label>
         <input
           type="file"
+          accept="image/*"
           onChange={(e) => setFile(e.target.files?.[0] || null)}
           className="block w-full text-sm text-gray-500
             file:mr-4 file:py-2 file:px-4
@@ -160,7 +161,7 @@ export default function AdminProjectForm({
             file:text-sm file:font-semibold
             file:bg-blue-50 file:text-blue-700
             hover:file:bg-blue-100
-            cursor-pointer border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
+            cursor-pointer border border-gray-300 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-700 focus:outline-none"
         />
         {initialData && (
           <p className="text-xs text-orange-500 mt-2 flex items-center gap-1">
@@ -173,7 +174,7 @@ export default function AdminProjectForm({
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700 transition"
+          className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700 transition disabled:bg-gray-400"
         >
           {loading
             ? "Saving..."
@@ -184,7 +185,7 @@ export default function AdminProjectForm({
         <button
           type="button"
           onClick={onCancel}
-          className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition"
+          className="bg-gray-300 dark:bg-zinc-600 text-black dark:text-white px-4 py-2 rounded hover:bg-gray-400 dark:hover:bg-zinc-500 transition"
         >
           Cancel
         </button>
