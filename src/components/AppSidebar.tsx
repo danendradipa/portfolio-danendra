@@ -28,6 +28,11 @@ const items = [
     url: "/admin/projects",
     icon: FolderGit2,
   },
+  {
+    title: "Blogs",
+    url: "/admin/blogs",
+    icon: FolderGit2,
+  }
 ];
 
 export function AppSidebar() {
