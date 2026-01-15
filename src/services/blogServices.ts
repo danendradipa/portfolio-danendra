@@ -33,8 +33,18 @@ export const getBlogBySlug = async (slug: string) => {
 };
 
 // UPLOAD IMAGE
-
 export const uploadImage = async (file: File) => {
+  const maxSize = 3 * 1024 * 1024; 
+  
+  if (file.size > maxSize) {
+    throw new Error('File size exceeds 3MB. Please choose a smaller image.');
+  }
+  
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
+  if (!allowedTypes.includes(file.type)) {
+    throw new Error('Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed.');
+  }
+  
   const fileName = `${Date.now()}-${file.name.replace(/\s/g, '-')}`;
   
   const { error } = await supabase.storage
@@ -51,7 +61,6 @@ export const uploadImage = async (file: File) => {
 };
 
 // CREATE
-
 export const createBlog = async (blog: BlogInput) => {
   const { error } = await supabase.from('blogs').insert([blog]);
   if (error) throw error;
