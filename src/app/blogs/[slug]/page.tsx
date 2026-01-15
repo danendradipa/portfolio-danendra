@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getBlogBySlug, getBlogs } from "@/services/blogServices";
-import { formatDate } from "@/helpers/helper";
+import { formatDate, calculateReadingTime } from "@/helpers/helper";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -63,6 +63,7 @@ const BlogDetailPage = async ({ params }: BlogDetailPageProps) => {
   if (!blog) {
     notFound();
   }
+  const readingTime = calculateReadingTime(blog.content || "");
 
   return (
     <section className="min-h-screen pt-20 pb-20 px-4 sm:px-8 bg-zinc-100 dark:bg-zinc-900">
@@ -115,7 +116,7 @@ const BlogDetailPage = async ({ params }: BlogDetailPageProps) => {
             </div>
             <div className="flex items-center gap-2">
               <Clock size={16} />
-              <span>5 min read</span>
+              <span>{readingTime} min read</span>
             </div>
           </div>
         </header>
@@ -124,7 +125,7 @@ const BlogDetailPage = async ({ params }: BlogDetailPageProps) => {
 
         <div className="prose prose-lg prose-zinc dark:prose-invert max-w-none">
           <div
-            className="text-zinc-800 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap"
+            className="text-zinc-800 dark:text-zinc-200 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: blog.content }}
           />
         </div>
