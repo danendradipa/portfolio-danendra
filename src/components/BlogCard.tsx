@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Blog } from "@/types/Blog";
-import { formatDate } from "@/helpers/helper";
+import { formatDate, calculateReadingTime } from "@/helpers/helper";
 import { Calendar, Clock } from "lucide-react";
 import Link from "next/link";
 
@@ -9,6 +9,7 @@ interface BlogCardProps {
 }
 
 const BlogCard = ({ blog }: BlogCardProps) => {
+  const readingTime = calculateReadingTime(blog.content || "");
   return (
     <div
       className={
@@ -38,7 +39,8 @@ const BlogCard = ({ blog }: BlogCardProps) => {
               {formatDate(blog.created_at || "")}
             </p>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 flex items-center gap-1">
-              <Clock size={12} />3 min read
+              <Clock size={12} />
+              {readingTime} min read
             </p>
           </div>
           <Link href={`/blogs/${blog.slug}`}>
