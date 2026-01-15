@@ -6,6 +6,7 @@ import {
   createProject,
   updateProject,
 } from "@/services/projectServices";
+import { formatFileSize } from "@/helpers/helper";
 
 type Props = {
   initialData?: Project | null;
@@ -26,6 +27,7 @@ export default function AdminProjectForm({
   const [toolsInput, setToolsInput] = useState("");
 
   const [file, setFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -38,6 +40,22 @@ export default function AdminProjectForm({
       setToolsInput(initialData.tools.join(", "));
     }
   }, [initialData]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null;
+    setFileError("");
+
+    if (selectedFile) {
+      const maxSize = 3 * 1024 * 1024; // 3MB
+      if (selectedFile.size > maxSize) {
+        setFileError("File size exceeds 3MB limit");
+        setFile(null);
+        return;
+      }
+    }
+
+    setFile(selectedFile);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -154,7 +172,7 @@ export default function AdminProjectForm({
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
+          onChange={handleFileChange}
           className="block w-full text-sm text-gray-500
             file:mr-4 file:py-2 file:px-4
             file:rounded-full file:border-0
@@ -163,6 +181,12 @@ export default function AdminProjectForm({
             hover:file:bg-blue-100
             cursor-pointer border border-gray-300 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-700 focus:outline-none"
         />
+        {file && (
+          <p className="text-xs text-green-600 mt-1">
+            Selected: {file.name} ({formatFileSize(file.size)})
+          </p>
+        )}
+        {fileError && <p className="text-xs text-red-500 mt-1">{fileError}</p>}
         {initialData && (
           <p className="text-xs text-orange-500 mt-2 flex items-center gap-1">
             Biarkan kosong jika tidak ingin mengubah gambar.
