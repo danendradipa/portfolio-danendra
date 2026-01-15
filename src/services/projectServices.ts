@@ -17,6 +17,17 @@ export const getProjects = async () => {
 
 // UPLOAD IMAGE
 export const uploadImage = async (file: File) => {
+  const maxSize = 3 * 1024 * 1024; 
+  
+  if (file.size > maxSize) {
+    throw new Error('File size exceeds 3MB. Please choose a smaller image.');
+  }
+  
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
+  if (!allowedTypes.includes(file.type)) {
+    throw new Error('Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed.');
+  }
+  
   const fileName = `${Date.now()}-${file.name.replace(/\s/g, '-')}`;
   
   const { error } = await supabase.storage
