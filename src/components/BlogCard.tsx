@@ -23,9 +23,17 @@ const BlogCard = ({ blog }: BlogCardProps) => {
           fill
           className="object-cover"
         />
-        <span className="absolute top-2 right-2 bg-white/90 px-2 py-1 text-xs font-bold rounded uppercase tracking-wider text-black">
-          {blog.tags}
-        </span>
+
+        <div className="absolute top-2 right-2 flex flex-wrap justify-end gap-1.5 max-w-[80%]">
+          {blog.tags.map((tag, index) => (
+            <span
+              key={index}
+              className="bg-white/90 backdrop-blur-sm px-2 py-1 text-[10px] font-bold rounded uppercase tracking-wider text-black shadow-sm"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
       </div>
       <div className="flex justify-between gap-4 ">
         <div>
@@ -46,7 +54,7 @@ const BlogCard = ({ blog }: BlogCardProps) => {
           <Link href={`/blogs/${blog.slug}`}>
             <button
               type="button"
-              className="text-white bg-orange-400 text-base font-semibold py-2 px-6 rounded-md hover:bg-orange-500 transition duration-300 mt-6 w-full"
+              className="text-white bg-orange-400 text-base font-semibold py-2 px-6 rounded-md hover:bg-orange-500 transition duration-300 mt-6 w-full cursor-pointer"
             >
               Read More
             </button>
