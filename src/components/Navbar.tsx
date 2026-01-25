@@ -18,12 +18,10 @@ const Navbar = () => {
     <header className="sticky top-0 z-10 py-8 px-8 bg-zinc-100 dark:bg-zinc-900">
       <FadeIn>
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo */}
           <div>
             <h1 className="text-2xl font-bold ">Dane</h1>
           </div>
 
-          {/* Navigation Links */}
           <nav
             className={`fixed md:relative top-0 left-0 h-screen md:h-auto w-full md:w-auto bg-zinc-300 dark:bg-zinc-900 md:bg-transparent flex flex-col md:flex-row items-center md:items-center md:space-x-10 px-4 md:px-0 transition-all duration-300 ${
               isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
@@ -48,7 +46,6 @@ const Navbar = () => {
             </ul>
           </nav>
 
-          {/* Social Media Icons (desktop) */}
           <div className="flex items-center gap-4">
             <ToggleTheme />
             <div className="hover:bg-zinc-300/50 dark:hover:bg-zinc-800/50 rounded p-2 transition duration-200">
