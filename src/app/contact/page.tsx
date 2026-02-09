@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import ContactSection from "@/components/ContactSection";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Get in touch with Danendra Dipa Dananjaya. Let's discuss your next project or collaboration opportunity.",
+};
 
 const Contact = () => {
   return (
