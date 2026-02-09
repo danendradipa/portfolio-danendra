@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import ProjectSection from "@/components/ProjectSection";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Explore my portfolio of web development projects using React, Next.js, TypeScript, and other modern technologies.",
+};
 
 const ProjectPage = () => {
   return (
