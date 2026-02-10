@@ -15,7 +15,7 @@ const Navbar = () => {
     return null;
   }
   return (
-    <header className="sticky top-0 z-10 py-8 px-8 bg-zinc-100 dark:bg-zinc-900">
+    <header className="sticky top-0 z-50 py-8 px-8 bg-zinc-100 dark:bg-zinc-900">
       <FadeIn>
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
           <div>
